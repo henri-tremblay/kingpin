@@ -9,7 +9,8 @@
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
             [cemerick.drawbridge :as drawbridge]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [camel-snake-kebab.core :as kebab]))
 
 (defn- authenticated? [user pass]
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
@@ -21,6 +22,18 @@
       (basic/wrap-basic-authentication authenticated?)))
 
 (defroutes app
+  (GET "/camel" {{input :input} :params}
+       {:status 200
+        :headers {"Content-Type" "text/plain"}
+        :body (kebab/->CamelCase input)})
+  (GET "/snake" {{input :input} :params}
+       {:status 200
+        :headers {"Content-Type" "text/plain"}
+        :body (kebab/->snake_case input)})
+  (GET "/kebab" {{input :input} :params}
+       {:status 200
+        :headers {"Content-Type" "text/plain"}
+        :body (kebab/->kebab-case input)})
   (ANY "/repl" {:as req}
        (drawbridge req))
   (GET "/" []
