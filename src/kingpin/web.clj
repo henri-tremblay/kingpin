@@ -21,6 +21,15 @@
       (session/wrap-session)
       (basic/wrap-basic-authentication authenticated?)))
 
+(def sample (env :sample "sample-string-thing"))
+
+(defn splash []
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (for [kind ["camel" "snake" "kebab"]]
+           (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
+                   kind sample kind sample))})
+
 (defroutes app
   (GET "/camel" {{input :input} :params}
        {:status 200
@@ -37,9 +46,7 @@
   (ANY "/repl" {:as req}
        (drawbridge req))
   (GET "/" []
-       {:status 200
-        :headers {"Content-Type" "text/plain"}
-        :body (pr-str ["Hello" :from 'Heroku])})
+       (splash))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
