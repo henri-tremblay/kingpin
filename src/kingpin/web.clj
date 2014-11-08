@@ -10,7 +10,8 @@
             [ring.middleware.basic-authentication :as basic]
             [cemerick.drawbridge :as drawbridge]
             [environ.core :refer [env]]
-            [camel-snake-kebab.core :as kebab]))
+            [camel-snake-kebab.core :as kebab]
+            [clojure.java.jdbc :as db]))
 
 (defn- authenticated? [user pass]
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
@@ -26,9 +27,18 @@
 (defn splash []
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (for [kind ["camel" "snake" "kebab"]]
-           (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
-                   kind sample kind sample))})
+   :body (concat (for [kind ["camel" "snake" "kebab"]]
+                   (format "<a href=\"/%s?input=%s\">%s %s</a><br />"
+                           kind sample kind sample))
+                 ["<hr /><ul>"]
+                 (for [s (db/query (env :database-url)
+                                   ["select content from sayings"])]
+                   (format "<li>%s</li>" (:content s)))
+                 ["</ul>"])})
+
+(defn record [input]
+  (db/insert! (env :database-url "postgres://localhost:5432/kebabs")
+              :sayings {:content input}))
 
 (defroutes app
   (GET "/camel" {{input :input} :params}
