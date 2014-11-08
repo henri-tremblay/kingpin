@@ -40,14 +40,6 @@
   (db/insert! (env :database-url "postgres://localhost:5432/kebabs")
               :sayings {:content input}))
 
-(db/db-do-commands db-spec
-  (db/create-table-ddl :sayings
-    [:id "serial primary key"]
-    [:content "text"]))
-
-(record "HelloComputer")
-
-              :sayings {:content input}))
 (defroutes app
   (GET "/camel" {{input :input} :params}
        {:status 200
