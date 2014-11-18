@@ -76,6 +76,6 @@ which can be very useful for debugging or inspecting live data.
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2014 Henri Tremblay
 
 Distributed under the Eclipse Public License, the same as Clojure.

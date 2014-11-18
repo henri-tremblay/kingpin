@@ -1,8 +1,8 @@
 (defproject kingpin "1.0.0-SNAPSHOT"
-  :description "FIXME: write description"
+  :description "Calculate your bowling score online"
   :url "http://kingpin.herokuapp.com"
-  :license {:name "FIXME: choose"
-            :url "http://example.com/FIXME"}
+  :license {:name "Eclipse Public License"
+            :url "https://github.com/henri-tremblay/kingpin"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.1.8"]
                  [ring/ring-jetty-adapter "1.2.2"]
