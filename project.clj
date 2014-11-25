@@ -13,9 +13,12 @@
                  [camel-snake-kebab "0.2.4"]
                  [org.clojure/java.jdbc "0.3.5"]
                  [postgresql "9.1-901-1.jdbc4"]]
-  :dev-dependencies [[leiningen-interactive "0.1.1"]]
   :min-lein-version "2.0.0"
-  :plugins [[environ/environ.lein "0.2.1"]]
+  :plugins [
+            [environ/environ.lein "0.2.1"]
+            [lein-midje "3.1.3"]]
   :hooks [environ.leiningen.hooks]
   :uberjar-name "kingpin-standalone.jar"
-  :profiles {:production {:env {:production true}}})
+  :profiles {
+             :production {:env {:production true}}
+             :dev {:dependencies [[midje "1.6.3"]]}})
